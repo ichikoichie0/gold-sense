@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "not yet generated",
+  "source": "FRED (Federal Reserve Bank of St. Louis) — public data",
+  "note": "Placeholder. Real data is populated by the daily GitHub Action. Until the first run completes, fields are null and shown as 'unavailable' — never as guessed numbers.",
+  "series": {
+    "real_2y": { "fred_id": "DFII2", "value": null, "as_of": null },
+    "real_5y": { "fred_id": "DFII5", "value": null, "as_of": null },
+    "real_10y": { "fred_id": "DFII10", "value": null, "as_of": null },
+    "breakeven_10y": { "fred_id": "T10YIE", "value": null, "as_of": null },
+    "dxy": { "fred_id": "DTWEXBGS", "value": null, "as_of": null },
+    "vix": { "fred_id": "VIXCLS", "value": null, "as_of": null },
+    "gold": { "fred_id": "GOLDPMGBD228NLBM", "value": null, "as_of": null }
+  },
+  "central_bank": {
+    "value": null,
+    "as_of": null,
+    "note": "No free real-time series for global central-bank gold buying. Treated qualitatively as a structural support factor. Not a live data point."
+  }
+}

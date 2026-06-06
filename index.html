@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Sense — Read gold like an analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9973A;--gold-light:#F5E6C8;--gold-pale:#FBF6EC;
+  --ink:#1A1612;--ink2:#4A4540;--ink3:#8A847E;--ink4:#C4BFB8;
+  --surface:#FFFFFF;--surface2:#FAF8F5;--surface3:#F2EDE5;
+  --red:#C0392B;--red-bg:#FDECEA;--green:#1A6B3C;--green-bg:#E6F5ED;
+  --amber:#92600A;--amber-bg:#FEF3DC;--blue:#1A4A7A;--blue-bg:#E8F0FB;
+  --radius:12px;--radius-lg:18px;--radius-xl:24px;
+  --shadow:0 2px 12px rgba(26,22,18,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--ink);font-size:15px;line-height:1.6;min-height:100vh;}
+#app{max-width:720px;margin:0 auto;padding:20px 16px 80px;}
+
+.app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:10px;}
+.app-logo{font-family:'Instrument Serif',serif;font-size:24px;color:var(--gold);}
+.lang-toggle{display:flex;background:var(--surface3);border-radius:30px;padding:3px;gap:2px;}
+.lang-btn{padding:5px 14px;border-radius:26px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--ink3);cursor:pointer;}
+.lang-btn.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.tagline{font-size:13px;color:var(--ink3);margin-bottom:16px;}
+
+.snapshot-banner{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--ink3);background:var(--surface3);border-radius:var(--radius);padding:7px 12px;margin-bottom:16px;}
+
+.price-hero{background:var(--ink);border-radius:var(--radius-xl);padding:26px 24px;margin-bottom:14px;position:relative;overflow:hidden;}
+.price-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(201,151,58,0.18) 0%,transparent 70%);}
+.price-label{font-size:11px;font-weight:500;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.price-value{font-family:'Instrument Serif',serif;font-size:44px;color:#fff;line-height:1;}
+.price-asof{font-size:11px;color:var(--ink4);margin-top:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.freq-tag{font-size:9px;font-weight:500;padding:1px 7px;border-radius:8px;background:rgba(255,255,255,0.12);color:var(--gold-light);letter-spacing:.03em;}
+.unavailable{color:var(--ink4);font-style:italic;font-size:13px;}
+
+.verdict-card{background:var(--ink);border-radius:var(--radius-lg);padding:18px 22px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.verdict-left{flex:1;}
+.verdict-label{font-size:11px;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.verdict-text{font-family:'Instrument Serif',serif;font-size:21px;color:#fff;}
+.verdict-sub{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.5;}
+.verdict-emoji{font-size:36px;}
+
+.card{background:var(--surface);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;box-shadow:var(--shadow);}
+.card-title{font-size:13px;font-weight:500;color:var(--ink2);display:flex;align-items:center;gap:7px;margin-bottom:14px;}
+
+.row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--surface3);gap:12px;cursor:pointer;}
+.row:last-of-type{border-bottom:none;}
+.row-left{flex:1;}
+.row-name{font-size:13px;font-weight:500;color:var(--ink);}
+.row-plain{font-size:12px;color:var(--ink3);margin-top:2px;line-height:1.45;}
+.row-right{text-align:right;flex-shrink:0;}
+.row-val{font-size:15px;font-weight:500;color:var(--ink);}
+.row-tag{font-size:11px;margin-top:3px;font-weight:500;}
+.row-asof{font-size:10px;color:var(--ink4);margin-top:3px;}
+.tag-bear{color:var(--red);} .tag-bull{color:var(--green);} .tag-warn{color:var(--amber);} .tag-neut{color:var(--ink3);}
+
+.means{margin-top:10px;padding:12px 14px;border-radius:var(--radius);border-left:3px solid var(--gold);background:var(--gold-pale);font-size:13px;color:var(--ink2);line-height:1.6;display:none;}
+.means.open{display:block;}
+
+.cb-card{background:var(--gold-pale);border:1.5px solid var(--gold-light);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:12px;}
+.cb-title{font-size:13px;font-weight:500;color:var(--ink);display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+.cb-text{font-size:13px;color:var(--ink2);line-height:1.6;}
+
+.framework-link{text-align:center;margin-top:8px;}
+.framework-link a{color:var(--gold);font-size:13px;text-decoration:none;font-weight:500;}
+.framework-link a:hover{text-decoration:underline;}
+
+.disclaimer{font-size:11px;color:var(--ink4);line-height:1.6;margin-top:20px;padding-top:14px;border-top:1px solid var(--surface3);text-align:center;}
+
+.error-banner{background:var(--amber-bg);border-radius:var(--radius);padding:12px 16px;margin-bottom:14px;font-size:13px;color:var(--amber);line-height:1.5;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="app-header">
+    <div class="app-logo">✦ Gold Sense</div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="enBtn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="zhBtn" onclick="setLang('zh')">中文</button>
+    </div>
+  </div>
+  <div class="tagline" id="tagline"></div>
+
+  <div class="snapshot-banner"><span>🕒</span><span id="snapshotBanner"></span></div>
+
+  <div id="errorBanner"></div>
+
+  <div class="price-hero">
+    <div class="price-label" id="priceLabel"></div>
+    <div class="price-value" id="goldPrice"></div>
+    <div class="price-asof"><span class="freq-tag" id="priceFreq"></span> <span id="goldAsof"></span></div>
+  </div>
+
+  <div class="verdict-card">
+    <div class="verdict-left">
+      <div class="verdict-label" id="verdictLabel"></div>
+      <div class="verdict-text" id="verdictText"></div>
+      <div class="verdict-sub" id="verdictSub"></div>
+    </div>
+    <div class="verdict-emoji" id="verdictEmoji">⚖️</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📡</span> <span id="driversTitle"></span></div>
+    <div id="driverRows"></div>
+  </div>
+
+  <div class="cb-card">
+    <div class="cb-title"><span>🏦</span> <span id="cbTitle"></span></div>
+    <div class="cb-text" id="cbText"></div>
+  </div>
+
+  <div class="framework-link"><a href="FRAMEWORK.html" id="frameworkLink"></a></div>
+
+  <div class="disclaimer" id="disclaimer"></div>
+</div>
+
+<script>
+// ══════════ COPY ══════════
+const T = {
+  en: {
+    tagline: "Read gold like an analyst — real data, no guesswork.",
+    snapshot: (d) => `Data as of ${d} · source: FRED (St. Louis Fed)`,
+    snapshotPending: "Data not yet generated — the daily updater hasn't run.",
+    priceLabel: "Gold price (London PM fix, USD/oz)",
+    unavailable: "Data unavailable",
+    verdictLabel: "Framework read",
+    driversTitle: "What's driving gold (real rates first)",
+    cbTitle: "Central bank demand — structural support",
+    cbText: "China, India, and Middle Eastern central banks have been buying gold steadily to reduce reliance on the US dollar. This demand is insensitive to price and rates — it's a long-term structural floor, not a daily data point. There's no reliable free real-time series for it, and the framework reads it as a trend anyway, so it's shown qualitatively rather than as a number that would imply false precision. Source for the broader picture: the World Gold Council's central-bank surveys.",
+    frameworkLink: "Read the full framework →",
+    disclaimer: "Educational tool, not investment advice. Gold can fall as well as rise. Data from FRED; figures are the latest available daily observations and may lag. Do your own research.",
+    errorLoad: "Couldn't load data. If you just deployed, the daily updater may not have run yet — open the Actions tab and run it once manually.",
+    drivers: {
+      real_2y: { name: "2Y real rate (TIPS)", plain: "Noise detector — most sensitive to the Fed's current path", unit:"%" },
+      real_10y: { name: "10Y real rate (TIPS)", plain: "The anchor — long-term real-rate center, confirms the signal", unit:"%" },
+      dxy: { name: "US Dollar (broad index)", plain: "Strong dollar usually pressures gold", unit:"" },
+      vix: { name: "Market fear (VIX)", plain: "High = fear = safe-haven bid for gold", unit:"" },
+    },
+    means: {
+      real_2y: "The 2Y real rate reacts fastest to what the Fed is doing right now. Use it as a noise detector: if it jumps but the 10Y doesn't follow, that move is likely short-term noise, not a real shift.",
+      real_10y: "The 10Y real rate is gold's main anchor. When it rises, holding gold (which pays nothing) costs more, so gold tends to fall. The key question is always whether the 2Y move is confirmed here at the long end.",
+      dxy: "Gold is priced in dollars, so a stronger dollar usually means a weaker gold price — but always ask why the dollar is moving. Rate-driven strength pressures gold; a dollar-credit problem can push both the same way.",
+      vix: "VIX is the fear gauge. In a crisis it can overwhelm everything else and send gold up as a safe haven. In calm markets its effect is small.",
+    },
+    tags: { bear:"headwind", bull:"tailwind", warn:"watch", neut:"neutral" },
+    verdicts: {
+      pressure: { text:"Under pressure", sub:"Real rates are elevated — the cyclical core is a headwind for gold.", emoji:"📉" },
+      support: { text:"Supported", sub:"Real rates are easing — the cyclical core is a tailwind for gold.", emoji:"📈" },
+      mixed: { text:"Mixed signals", sub:"Drivers are pulling in different directions. Watch for divergence between rates and price.", emoji:"⚖️" },
+      nodata: { text:"Awaiting data", sub:"Not enough live data to form a read yet.", emoji:"⏳" },
+    },
+  },
+  zh: {
+    tagline: "像分析师一样读懂黄金——真实数据，不编造。",
+    snapshot: (d) => `数据截至 ${d} · 来源：FRED（圣路易斯联储）`,
+    snapshotPending: "数据尚未生成——每日更新任务还没运行。",
+    priceLabel: "黄金价格（伦敦午盘定盘价，美元/盎司）",
+    unavailable: "暂无数据",
+    verdictLabel: "框架判断",
+    driversTitle: "当前影响金价的因素（实际利率优先）",
+    cbTitle: "央行购金——结构性支撑",
+    cbText: "中国、印度和中东各国央行持续买入黄金以降低对美元的依赖。这部分需求对价格和利率都不敏感，是长期的结构性底部支撑，而不是每日变动的数据点。目前没有可靠的免费实时数据序列，而框架本来就是把它当趋势来读，所以这里以定性方式呈现，而不是给一个会造成「虚假精确」的数字。整体情况可参考世界黄金协会（WGC）的央行调查。",
+    frameworkLink: "阅读完整框架 →",
+    disclaimer: "本工具用于教育目的，不构成投资建议。黄金价格可涨可跌。数据来自 FRED，为最新可得的每日观测值，可能有滞后。请自行研究。",
+    errorLoad: "数据加载失败。如果你刚部署，每日更新任务可能还没运行——打开 Actions 标签页手动运行一次。",
+    drivers: {
+      real_2y: { name: "2年期实际利率（TIPS）", plain: "噪音探测器——对 Fed 当前路径最敏感", unit:"%" },
+      real_10y: { name: "10年期实际利率（TIPS）", plain: "主锚——长期实际利率中枢，用来确认信号", unit:"%" },
+      dxy: { name: "美元（广义指数）", plain: "美元走强通常压制金价", unit:"" },
+      vix: { name: "市场恐慌（VIX）", plain: "数值高 = 恐慌 = 黄金避险需求上升", unit:"" },
+    },
+    means: {
+      real_2y: "2年期实际利率对 Fed 当下的动作反应最快。把它当噪音探测器用：如果它跳动但 10 年期没跟上，这个变动很可能是短期噪音，而不是真正的方向改变。",
+      real_10y: "10年期实际利率是黄金的主锚。它上行时，持有不生息的黄金成本更高，金价往往下跌。关键问题始终是：2年期的变动有没有在长端得到确认。",
+      dxy: "黄金以美元计价，所以美元走强通常意味着金价走弱——但永远要问美元为什么动。利率驱动的强势压制金价；而美元信用出问题时，两者可能同向。",
+      vix: "VIX 是恐慌指标。危机时它能压过其他一切因素，推动黄金作为避险资产上涨。市场平静时影响很小。",
+    },
+    tags: { bear:"利空", bull:"利多", warn:"关注", neut:"中性" },
+    verdicts: {
+      pressure: { text:"承压", sub:"实际利率偏高——周期核对黄金构成压力。", emoji:"📉" },
+      support: { text:"获得支撑", sub:"实际利率回落——周期核对黄金形成支撑。", emoji:"📈" },
+      mixed: { text:"信号混合", sub:"各因素方向不一。注意利率与价格之间是否出现背离。", emoji:"⚖️" },
+      nodata: { text:"等待数据", sub:"实时数据不足，暂无法形成判断。", emoji:"⏳" },
+    },
+  }
+};
+
+let lang = "en";
+let DATA = null;
+
+function setLang(l){
+  lang = l;
+  document.getElementById("enBtn").classList.toggle("active", l==="en");
+  document.getElementById("zhBtn").classList.toggle("active", l==="zh");
+  render();
+}
+
+function fmt(v, unit){
+  if (v === null || v === undefined) return null;
+  return (unit === "%") ? v.toFixed(2) + "%" : v.toFixed(2);
+}
+
+// Rule engine — encodes the framework. Operates ONLY on real data; if data is
+// missing it returns "nodata" rather than inventing a verdict.
+function computeVerdict(s){
+  const r10 = s.real_10y?.value;
+  if (r10 === null || r10 === undefined) return "nodata";
+  // Real-rate anchor: high real rates = headwind, low/negative = tailwind.
+  // Thresholds reflect the framework's "above ~1.5% is a headwind" heuristic.
+  if (r10 >= 1.5) return "pressure";
+  if (r10 <= 0.5) return "support";
+  return "mixed";
+}
+
+function driverTag(key, s){
+  const v = s[key]?.value;
+  if (v === null || v === undefined) return "neut";
+  if (key === "real_2y" || key === "real_10y") return v >= 1.5 ? "bear" : (v <= 0.5 ? "bull" : "neut");
+  if (key === "dxy") return "neut";   // direction needs history; shown neutral without a change figure
+  if (key === "vix") return v >= 25 ? "bull" : "neut";
+  return "neut";
+}
+
+function render(){
+  const t = T[lang];
+  document.getElementById("tagline").textContent = t.tagline;
+  document.getElementById("priceLabel").textContent = t.priceLabel;
+  document.getElementById("verdictLabel").textContent = t.verdictLabel;
+  document.getElementById("driversTitle").textContent = t.driversTitle;
+  document.getElementById("cbTitle").textContent = t.cbTitle;
+  document.getElementById("cbText").textContent = t.cbText;
+  document.getElementById("frameworkLink").textContent = t.frameworkLink;
+  document.getElementById("disclaimer").textContent = t.disclaimer;
+
+  if (!DATA){
+    document.getElementById("errorBanner").innerHTML = `<div class="error-banner">${t.errorLoad}</div>`;
+    return;
+  }
+  document.getElementById("errorBanner").innerHTML = "";
+
+  const s = DATA.series || {};
+
+  // Snapshot banner
+  const gen = DATA.generated_at_utc;
+  document.getElementById("snapshotBanner").textContent =
+    (gen && gen !== "not yet generated") ? t.snapshot(s.real_10y?.as_of || gen) : t.snapshotPending;
+
+  // Gold price (never fabricate)
+  const gold = s.gold?.value;
+  document.getElementById("priceFreq").textContent = "DAILY";
+  if (gold === null || gold === undefined){
+    document.getElementById("goldPrice").innerHTML = `<span class="unavailable">${t.unavailable}</span>`;
+    document.getElementById("goldAsof").textContent = "";
+  } else {
+    document.getElementById("goldPrice").textContent = "$" + gold.toLocaleString(undefined,{maximumFractionDigits:2});
+    document.getElementById("goldAsof").textContent = s.gold.as_of || "";
+  }
+
+  // Verdict
+  const vKey = computeVerdict(s);
+  const v = t.verdicts[vKey];
+  document.getElementById("verdictText").textContent = v.text;
+  document.getElementById("verdictSub").textContent = v.sub;
+  document.getElementById("verdictEmoji").textContent = v.emoji;
+
+  // Driver rows
+  const order = ["real_2y","real_10y","dxy","vix"];
+  const rows = order.map(key => {
+    const meta = t.drivers[key];
+    const sd = s[key] || {};
+    const valStr = fmt(sd.value, meta.unit);
+    const tag = driverTag(key, s);
+    const valHtml = (valStr === null)
+      ? `<span class="unavailable">${t.unavailable}</span>`
+      : valStr;
+    const tagHtml = (valStr === null) ? "" : `<div class="row-tag tag-${tag}">${t.tags[tag]}</div>`;
+    const asofHtml = sd.as_of ? `<div class="row-asof">${sd.as_of}</div>` : "";
+    return `<div class="row" onclick="toggleMeans('${key}')">
+      <div class="row-left">
+        <div class="row-name">${meta.name}</div>
+        <div class="row-plain">${meta.plain}</div>
+        <div class="means" id="means-${key}">${t.means[key]}</div>
+      </div>
+      <div class="row-right">
+        <div class="row-val">${valHtml}</div>
+        ${tagHtml}
+        ${asofHtml}
+      </div>
+    </div>`;
+  }).join("");
+  document.getElementById("driverRows").innerHTML = rows;
+}
+
+function toggleMeans(key){
+  const el = document.getElementById("means-"+key);
+  if (el) el.classList.toggle("open");
+}
+
+// Load real data. Cache-bust so updates show promptly.
+fetch("data/data.json?t=" + Date.now())
+  .then(r => r.json())
+  .then(d => { DATA = d; render(); })
+  .catch(() => { DATA = null; render(); });
+
+render();
+</script>
+</body>
+</html>

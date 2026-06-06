@@ -1,0 +1,42 @@
+name: Update gold data
+
+on:
+  schedule:
+    # Runs every day at 22:30 UTC (after US market close, ~5:30pm ET).
+    # FRED publishes daily series after close; this grabs the prior trading day.
+    - cron: "30 22 * * 1-5"
+  workflow_dispatch: {}   # allows manual "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write          # needed so the action can commit the updated data.json
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch latest data from FRED
+        env:
+          # Optional: add a free FRED key as a repo secret named FRED_API_KEY
+          # for a fallback path. The script works without it via the public CSV.
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/fetch_data.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/data.json
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "Update gold data ($(date -u +%Y-%m-%d))"
+            git push
+          fi
