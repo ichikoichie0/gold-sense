@@ -1,19 +1,47 @@
 {
-  "generated_at_utc": "not yet generated",
+  "generated_at_utc": "2026-06-16 23:57 UTC",
   "source": "FRED (Federal Reserve Bank of St. Louis) — public data",
-  "note": "Placeholder. Real data is populated by the daily GitHub Action. Until the first run completes, fields are null and shown as 'unavailable' — never as guessed numbers.",
+  "note": "Values are the latest available daily observations (typically the prior trading day). Fields that could not be fetched are null and must be shown as 'unavailable', never as a guessed number.",
   "series": {
-    "real_2y": { "fred_id": "DFII2", "value": null, "as_of": null },
-    "real_5y": { "fred_id": "DFII5", "value": null, "as_of": null },
-    "real_10y": { "fred_id": "DFII10", "value": null, "as_of": null },
-    "breakeven_10y": { "fred_id": "T10YIE", "value": null, "as_of": null },
-    "dxy": { "fred_id": "DTWEXBGS", "value": null, "as_of": null },
-    "vix": { "fred_id": "VIXCLS", "value": null, "as_of": null },
-    "gold": { "fred_id": "GOLDPMGBD228NLBM", "value": null, "as_of": null }
+    "real_2y": {
+      "fred_id": "DFII2",
+      "value": null,
+      "as_of": null
+    },
+    "real_5y": {
+      "fred_id": "DFII5",
+      "value": 1.78,
+      "as_of": "2026-06-15"
+    },
+    "real_10y": {
+      "fred_id": "DFII10",
+      "value": 2.15,
+      "as_of": "2026-06-15"
+    },
+    "breakeven_10y": {
+      "fred_id": "T10YIE",
+      "value": 2.29,
+      "as_of": "2026-06-16"
+    },
+    "dxy": {
+      "fred_id": "DTWEXBGS",
+      "value": 119.5073,
+      "as_of": "2026-06-12"
+    },
+    "vix": {
+      "fred_id": "VIXCLS",
+      "value": 16.2,
+      "as_of": "2026-06-15"
+    },
+    "gold": {
+      "fred_id": "GOLDPMGBD228NLBM",
+      "value": null,
+      "as_of": null
+    }
   },
   "central_bank": {
     "value": null,
     "as_of": null,
-    "note": "No free real-time series for global central-bank gold buying. Treated qualitatively as a structural support factor. Not a live data point."
+    "note": "No reliable free real-time series for central-bank gold buying (verified: FRED has no clean tonnes series for China). Treated qualitatively as a structural support factor per the framework. Deliberately not a number, to avoid false precision."
   }
 }
