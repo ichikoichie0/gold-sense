@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-19 00:10 UTC",
+  "generated_at_utc": "2026-06-19 23:37 UTC",
   "source": "FRED (Federal Reserve Bank of St. Louis) — public data",
   "note": "Values are the latest available daily observations (typically the prior trading day). Fields that could not be fetched are null and must be shown as 'unavailable', never as a guessed number.",
   "series": {
