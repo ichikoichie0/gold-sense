@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-19 23:37 UTC",
+  "generated_at_utc": "2026-06-22 23:51 UTC",
   "source": "FRED (Federal Reserve Bank of St. Louis) — public data",
   "note": "Values are the latest available daily observations (typically the prior trading day). Fields that could not be fetched are null and must be shown as 'unavailable', never as a guessed number.",
   "series": {
@@ -11,27 +11,27 @@
     "real_5y": {
       "fred_id": "DFII5",
       "value": 1.96,
-      "as_of": "2026-06-17"
+      "as_of": "2026-06-18"
     },
     "real_10y": {
       "fred_id": "DFII10",
-      "value": 2.23,
-      "as_of": "2026-06-17"
+      "value": 2.21,
+      "as_of": "2026-06-18"
     },
     "breakeven_10y": {
       "fred_id": "T10YIE",
-      "value": 2.25,
-      "as_of": "2026-06-18"
+      "value": 2.23,
+      "as_of": "2026-06-22"
     },
     "dxy": {
       "fred_id": "DTWEXBGS",
-      "value": 119.5073,
-      "as_of": "2026-06-12"
+      "value": 120.3958,
+      "as_of": "2026-06-18"
     },
     "vix": {
       "fred_id": "VIXCLS",
-      "value": 18.44,
-      "as_of": "2026-06-17"
+      "value": 16.78,
+      "as_of": "2026-06-19"
     },
     "gold": {
       "fred_id": "GOLDPMGBD228NLBM",
